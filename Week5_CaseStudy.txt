@@ -1,0 +1,160 @@
+pizza management
+
+package com.pizzamanagement;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "PizzaTable" )
+public class Pizza {
+	
+	@Id
+	private int Pizza_Num;
+	private String Pizza_Type;
+	private int Pizza_price;
+	private String Del_Address;
+	
+	//getters and setters
+	public int getPizza_Num() {
+		return Pizza_Num;
+	}
+	public void setPizza_Num(int Pizza_Num) {
+		this.Pizza_Num = Pizza_Num;
+	}
+	public String getPizza_Type() {
+		return Pizza_Type;
+	}
+	public void setPizza_Type(String Pizza_Type) {
+		this.Pizza_Type = Pizza_Type;
+	}
+	public int getPizza_price() {
+		return Pizza_price;
+	}
+	public void setPizza_price(int Pizza_price) {
+		this.Pizza_price = Pizza_price;
+	}
+	public String getDel_Address() {
+		return Del_Address;
+	}
+	public void setDel_Address(String Del_Address) {
+		Del_Address = Del_Address;
+	}
+	
+	//default constructor
+	public Pizza() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	//Parameterized constructor
+	public Pizza(int Pizza_Num, String Pizza_Type, int Pizza_price, String Del_Address) {
+		super();
+		this.Pizza_Num = Pizza_Num;
+		this.Pizza_Type = Pizza_Type;
+		this.Pizza_price = Pizza_price;
+		Del_Address = Del_Address;
+	}
+	
+	//toString() method
+	@Override
+	public String toString() {
+		return "Pizza [Pizza_Num=" + Pizza_Num + ", Pizza_Type=" + Pizza_Type + ", Pizza_price=" + Pizza_price
+				+ ", Del_Address=" + Del_Address + "]";
+	}
+}
+
+
+pizza service
+
+
+
+
+package com.pizzamanagement.service;
+
+import com.pizzamanagement.model.Pizza;
+
+public interface PizzaService 
+{
+	void addPizza(Pizza pizza);
+	
+	void updatePizza(Pizza pizza);
+	
+	void deletePizza(Pizza pizza);
+	
+	Pizza findPizzaByNo(int Pizza_Num);
+}
+
+
+
+package com.pizzamanagement.service;
+
+import com.pizzamanagement.Dao.PizzaDao;
+import com.pizzamanagement.Dao.PizzaDaoImpl;
+import com.pizzamanagement.model.Pizza;
+
+public class PizzaServiceImpl implements PizzaService {                                            //implemntation of services added in PizzaSevice Interface
+
+	private PizzaDao dao;                                                                      //dao object
+	
+	public PizzaServiceImpl()                                                                  //default PizzaServiceImpl constructor 
+	{
+		dao = new PizzaDaoImpl();	                                                   //initializing the dao object 
+	}
+	
+	
+	@Override
+	public void addPizza(Pizza pizza) {
+		dao.beginTransaction();
+		dao.addPizza(pizza);
+		dao.commitTransaction();
+	}
+
+	@Override
+	public void updatePizza(Pizza pizza) {
+		dao.beginTransaction();
+		dao.updatePizza(pizza);
+		dao.commitTransaction();
+		
+	}
+
+	@Override
+	public void deletePizza(Pizza pizza) {
+		dao.beginTransaction();
+		dao.deletePizza(pizza);
+		dao.commitTransaction();
+		
+	}
+
+	@Override
+	public Pizza findPizzaByNo(int Pizza_Num) {
+		
+		Pizza pizza = dao.getPizzaByNo(Pizza_Num);
+		return pizza;
+		
+	}
+
+}
+
+
+
+
+package com.pizzamanagement.Dao;
+
+import com.pizzamanagement.model.Pizza;
+
+public interface PizzaDao {
+	
+	Pizza getPizzaByNo(int Pizza_Num);
+	
+	void addPizza(Pizza pizza);
+	
+	void updatePizza(Pizza pizza);
+	
+	void deletePizza(Pizza pizza);
+	
+	void beginTransaction();
+	
+	void commitTransaction();
+
+}
